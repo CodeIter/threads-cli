@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "threads-cli"
 version = "1.1.2"
 authors = [
-  { name = "Peter Lord", url = "https://github.com/ptrlrd", email = "hello@ptrlrd.com‬" },
+  { name = "Peter Lord", url = "https://github.com/ptrlrd", email = "hello@ptrlrd.com" },
   { name = "Muhammad Amin Boubaker", url = "https://github.com/CodeIter", email = "muhammadaminboubaker@gmail.com" }
 ]
 description = "CLI tool for interacting with Meta Threads"
