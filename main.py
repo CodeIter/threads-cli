@@ -319,5 +319,8 @@ def send_draft(draft_id: int, drafts_file: str = DRAFTS_FILE):
 
     typer.echo(f"Draft with ID {draft_id} sent and removed from drafts.")
 
-if __name__ == "__main__":
+def main():
     app()
+
+if __name__ == "__main__":
+    main()
