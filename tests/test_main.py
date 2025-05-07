@@ -1,10 +1,29 @@
-import unittest
 import os
 import json
+import unittest
 from unittest.mock import patch
+
 from typer.testing import CliRunner
 
-from main import app
+# Import from the local package located in the 'src' directory
+from src.app import app
+
+# Import the 'app' object from the local module in the 'src' package.
+from src.app import app
+
+# --- Alternative Method to Modify sys.path for Testing ---
+# This approach is used to allow importing main.py, which is located in the project's root directory,
+# when such tests rely on running the application entry point.
+# Note: main.py defines a main() function and runs it if executed directly by the user.
+# Modifying sys.path is less ideal because it involves changing the import path at runtime, which can lead to
+# maintenance issues or conflicts with the module namespace.
+
+# # Uncomment the line below to update sys.path, adding the project root directory.
+# import sys
+# sys.path.insert(0, os.path.abspath(
+#     os.path.join(os.path.dirname(__file__), '..')
+# ))
+# from main import app
 
 TEST_DRAFTS_FILE = "test-drafts.json"
 
