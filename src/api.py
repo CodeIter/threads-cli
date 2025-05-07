@@ -1,5 +1,5 @@
 import requests
-from utils import convert_to_locale
+from .utils import convert_to_locale
 
 BASE_URL = "https://graph.threads.net/v1.0"
 
