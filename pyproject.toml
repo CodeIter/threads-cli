@@ -1,23 +1,25 @@
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = ["setuptools>=80.0,<81.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "threads-cli"
 version = "1.1.2"
+maintainers = [
+  { name = "Peter Lord", email = "hello@ptrlrd.com" }
+]
 authors = [
-  { name = "Peter Lord", url = "https://github.com/ptrlrd", email = "hello@ptrlrd.com" },
-  { name = "Muhammad Amin Boubaker", url = "https://github.com/CodeIter", email = "muhammadaminboubaker@gmail.com" }
+  { name = "Peter Lord", email = "hello@ptrlrd.com" },
+  { name = "Muhammad Amin Boubaker", email = "muhammadaminboubaker@gmail.com" }
 ]
 description = "CLI tool for interacting with Meta Threads"
 readme = "README.md"
-requires-python = ">=3.6"
+requires-python = ">=3.8, <3.14"
 dependencies = [
-  "requests>=2.32.3",
-  "typer==0.12.3",
-  "rich>=13.7.1",
-  "python-dotenv>=1.0.1"
+  "requests>=2.32,<3.0",
+  "typer>=0.12.3,<1.0",
+  "rich>=13.7,<14.0",
+  "python-dotenv>=1.0,<2.0"
 ]
-
 [project.scripts]
 threads-cli = "main:main"
