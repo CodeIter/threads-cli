@@ -1,4 +1,5 @@
 import os
+import uuid
 import json
 import unittest
 from unittest.mock import patch
@@ -25,7 +26,12 @@ from src.app import app
 # ))
 # from main import app
 
-TEST_DRAFTS_FILE = "test-drafts.json"
+# Generate a unique test drafts file name
+TEST_DRAFTS_FILE = f"test-drafts-{uuid.uuid4().hex[:6]}.json"
+
+# Ensure DRAFTS_FILE path is resolved and the file exists, following XDG Base Directory Specification if necessary.
+TEST_DRAFTS_FILE = ensure_drafts_file(TEST_DRAFTS_FILE)
+os.remove(TEST_DRAFTS_FILE)
 
 class TestThreadsCLI(unittest.TestCase):
     def setUp(self):
