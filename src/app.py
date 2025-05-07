@@ -8,7 +8,16 @@ from rich.console import Console
 from rich.table import Table
 
 from .env import ACCESS_TOKEN, DRAFTS_FILE
-from .api import get_user_id, get_user_profile, get_user_posts, get_post_insights, fetch_all_posts, create_post, get_post_replies, get_post_replies_count
+from .api import (
+    get_user_id,
+    get_user_profile,
+    get_user_posts,
+    get_post_insights,
+    fetch_all_posts,
+    create_post,
+    get_post_replies,
+    get_post_replies_count,
+)
 from .utils import convert_to_locale
 
 ACCESS_TOKEN = os.getenv("ACCESS_TOKEN")
