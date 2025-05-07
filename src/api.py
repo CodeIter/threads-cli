@@ -1,8 +1,7 @@
 import requests
 
+from .env import BASE_URL
 from .utils import convert_to_locale
-
-BASE_URL = "https://graph.threads.net/v1.0"
 
 def get_user_id(headers):
     response = requests.get(f"{BASE_URL}/me?fields=id", headers=headers)
