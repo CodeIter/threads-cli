@@ -1,25 +1,50 @@
-import typer
 import os
 import threading
+from datetime import datetime, timedelta, timezone
 import json
+
+import typer
 from rich.console import Console
 from rich.table import Table
-from datetime import datetime, timedelta, timezone
-from dotenv import load_dotenv
 
+from .env import ACCESS_TOKEN, DRAFTS_FILE
 from .api import get_user_id, get_user_profile, get_user_posts, get_post_insights, fetch_all_posts, create_post, get_post_replies, get_post_replies_count
 from .utils import convert_to_locale
 
-app = typer.Typer()
-console = Console()
-load_dotenv()
-
 ACCESS_TOKEN = os.getenv("ACCESS_TOKEN")
+
+if not ACCESS_TOKEN:
+    print("Error: The required ACCESS_TOKEN is not set. Please set it in your environment or in your .env file.")
+    sys.exit(1)
+
+# Determine if DRAFTS_FILE contains a path separator.
+if not os.path.exists(DRAFTS_FILE) and os.path.sep not in DRAFTS_FILE:
+    # Determine the cache directory
+    # XDG_CACHE_HOME defaults to HOME/.cache if not set
+    xdg_cache_home = os.getenv('XDG_CACHE_HOME')
+    if not xdg_cache_home:
+        home = os.getenv('HOME')
+        if not home:
+            raise EnvironmentError("HOME environment variable is not set.")
+        xdg_cache_home = os.path.join(home, '.cache')
+    # Define final path: XDG_CACHE_HOME/threads-cli/DRAFTS_FILE
+    drafts_dir = os.path.join(xdg_cache_home, "threads-cli")
+    os.makedirs(drafts_dir, exist_ok=True)  # Create directory if it doesn't exist
+    DRAFTS_FILE = os.path.join(drafts_dir, DRAFTS_FILE)
+# If it's not there, create an empty JSON file.
+if not os.path.exists(DRAFTS_FILE):
+    with open(DRAFTS_FILE, "w") as f:
+        # Create an empty list or dict, depending on your needs.
+        # Here we write an empty dict.
+        json.dump({}, f)
+
 HEADERS = {
     'Authorization': f'Bearer {ACCESS_TOKEN}'
 }
-DRAFTS_FILE = 'drafts.json'
 SERVER_PROCESS_TIME = 10
+
+app = typer.Typer()
+console = Console()
 
 @app.command()
 def get_profile():
