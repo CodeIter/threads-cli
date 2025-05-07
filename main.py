@@ -6,8 +6,9 @@ from rich.console import Console
 from rich.table import Table
 from datetime import datetime, timedelta, timezone
 from dotenv import load_dotenv
-from api import get_user_id, get_user_profile, get_user_posts, get_post_insights, fetch_all_posts, create_post, get_post_replies, get_post_replies_count
-from utils import convert_to_locale
+
+from src.api import get_user_id, get_user_profile, get_user_posts, get_post_insights, fetch_all_posts, create_post, get_post_replies, get_post_replies_count
+from src.utils import convert_to_locale
 
 app = typer.Typer()
 console = Console()
