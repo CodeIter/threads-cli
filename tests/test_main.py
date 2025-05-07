@@ -3,6 +3,7 @@ import os
 import json
 from unittest.mock import patch
 from typer.testing import CliRunner
+
 from main import app
 
 TEST_DRAFTS_FILE = "test-drafts.json"
