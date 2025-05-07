@@ -17,6 +17,17 @@ if not ACCESS_TOKEN:
     print("Error: The required ACCESS_TOKEN is not set. Please set it in your environment or in your .env file.")
     sys.exit(1)
 
+# DRAFTS_FILE specifies the file name or path for saving draft data.
+# If DRAFTS_FILE does not exist and contains only a simple filename (without any path separator),
+# the application uses the XDG Base Directory Specification to determine the cache directory:
+#   - It first checks for the XDG_CACHE_HOME environment variable.
+#   - If not set, it defaults to HOME/.cache.
+# Then, a sub-folder named "threads-cli" is created within the cache directory,
+# and DRAFTS_FILE is placed inside that sub-folder.
+# If DRAFTS_FILE exists as a simple filename, it is used as provided.
+# If DRAFTS_FILE already contains a path separator (i.e., it's a complete path),
+# the application will use it exactly as given.
+
 # Determine if DRAFTS_FILE not exist and contains a path separator.
 if not os.path.exists(DRAFTS_FILE) and os.path.sep not in DRAFTS_FILE:
     # Determine the cache directory
