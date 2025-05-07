@@ -17,7 +17,7 @@ if not ACCESS_TOKEN:
     print("Error: The required ACCESS_TOKEN is not set. Please set it in your environment or in your .env file.")
     sys.exit(1)
 
-# Determine if DRAFTS_FILE contains a path separator.
+# Determine if DRAFTS_FILE not exist and contains a path separator.
 if not os.path.exists(DRAFTS_FILE) and os.path.sep not in DRAFTS_FILE:
     # Determine the cache directory
     # XDG_CACHE_HOME defaults to HOME/.cache if not set
