@@ -19,6 +19,7 @@ from .api import (
     get_post_replies_count,
 )
 from .utils import convert_to_locale
+from .draft_utils import ensure_drafts_file
 
 ACCESS_TOKEN = os.getenv("ACCESS_TOKEN")
 
@@ -26,37 +27,8 @@ if not ACCESS_TOKEN:
     print("Error: The required ACCESS_TOKEN is not set. Please set it in your environment or in your .env file.")
     sys.exit(1)
 
-# DRAFTS_FILE specifies the file name or path for saving draft data.
-# If DRAFTS_FILE does not exist and contains only a simple filename (without any path separator),
-# the application uses the XDG Base Directory Specification to determine the cache directory:
-#   - It first checks for the XDG_CACHE_HOME environment variable.
-#   - If not set, it defaults to HOME/.cache.
-# Then, a sub-folder named "threads-cli" is created within the cache directory,
-# and DRAFTS_FILE is placed inside that sub-folder.
-# If DRAFTS_FILE exists as a simple filename, it is used as provided.
-# If DRAFTS_FILE already contains a path separator (i.e., it's a complete path),
-# the application will use it exactly as given.
-
-# Determine if DRAFTS_FILE not exist and contains a path separator.
-if not os.path.exists(DRAFTS_FILE) and os.path.sep not in DRAFTS_FILE:
-    # Determine the cache directory
-    # XDG_CACHE_HOME defaults to HOME/.cache if not set
-    xdg_cache_home = os.getenv('XDG_CACHE_HOME')
-    if not xdg_cache_home:
-        home = os.getenv('HOME')
-        if not home:
-            raise EnvironmentError("HOME environment variable is not set.")
-        xdg_cache_home = os.path.join(home, '.cache')
-    # Define final path: XDG_CACHE_HOME/threads-cli/DRAFTS_FILE
-    drafts_dir = os.path.join(xdg_cache_home, "threads-cli")
-    os.makedirs(drafts_dir, exist_ok=True)  # Create directory if it doesn't exist
-    DRAFTS_FILE = os.path.join(drafts_dir, DRAFTS_FILE)
-# If it's not there, create an empty JSON file.
-if not os.path.exists(DRAFTS_FILE):
-    with open(DRAFTS_FILE, "w") as f:
-        # Create an empty list or dict, depending on your needs.
-        # Here we write an empty dict.
-        json.dump({}, f)
+# Ensure DRAFTS_FILE path is resolved and the file exists, following XDG Base Directory Specification if necessary.
+DRAFTS_FILE = ensure_drafts_file(DRAFTS_FILE)
 
 HEADERS = {
     'Authorization': f'Bearer {ACCESS_TOKEN}'
