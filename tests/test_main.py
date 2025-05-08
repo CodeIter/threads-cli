@@ -6,6 +6,8 @@ from unittest.mock import patch
 
 from typer.testing import CliRunner
 
+from src.draft_utils import ensure_drafts_file
+
 # Import the 'app' object from the local module in the 'src' package.
 from src.app import app
 
