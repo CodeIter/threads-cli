@@ -15,8 +15,6 @@ from src.app import app
 # This approach is used to allow importing main.py, which is located in the project's root directory,
 # when such tests rely on running the application entry point.
 # Note: main.py defines a main() function and runs it if executed directly by the user.
-# Modifying sys.path is less ideal because it involves changing the import path at runtime, which can lead to
-# maintenance issues or conflicts with the module namespace.
 
 # # Uncomment the line below to update sys.path, adding the project root directory.
 # import sys
