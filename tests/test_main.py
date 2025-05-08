@@ -49,7 +49,7 @@ class TestThreadsCLI(unittest.TestCase):
         self.assertIn("Recent Posts", result.stdout)
 
     def test_create_text_post(self):
-        with patch("main.create_post") as mock_create_post:
+        with patch("src.app.create_post") as mock_create_post:
             mock_create_post.return_value = {"id": "123"}
             result = self.runner.invoke(app, ["create-text-post", "Test post"])
             self.assertEqual(result.exit_code, 0)
@@ -79,7 +79,7 @@ class TestThreadsCLI(unittest.TestCase):
             draft_id = drafts[0]["id"]
 
         # Test sending an existing draft
-        with patch("main.create_text_post") as mock_create_text_post:
+        with patch("src.app.create_text_post") as mock_create_text_post:
             result = self.runner.invoke(app, ["send-draft", str(draft_id), "--drafts-file", TEST_DRAFTS_FILE])
             self.assertEqual(result.exit_code, 0)
             self.assertIn(f"Draft with ID {draft_id} sent and removed from drafts.", result.stdout)
