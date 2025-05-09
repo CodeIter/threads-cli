@@ -1,11 +1,34 @@
-import unittest
 import os
+import uuid
 import json
+import unittest
 from unittest.mock import patch
-from typer.testing import CliRunner
-from main import app
 
-TEST_DRAFTS_FILE = "test-drafts.json"
+from typer.testing import CliRunner
+
+from src.draft_utils import ensure_drafts_file
+
+# Import the 'app' object from the local module in the 'src' package.
+from src.app import app
+
+# --- Alternative Method to Modify sys.path for Testing ---
+# This approach is used to allow importing main.py, which is located in the project's root directory,
+# when such tests rely on running the application entry point.
+# Note: main.py defines a main() function and runs it if executed directly by the user.
+
+# # Uncomment the line below to update sys.path, adding the project root directory.
+# import sys
+# sys.path.insert(0, os.path.abspath(
+#     os.path.join(os.path.dirname(__file__), '..')
+# ))
+# from main import app
+
+# Generate a unique test drafts file name
+TEST_DRAFTS_FILE = f"test-drafts-{uuid.uuid4().hex[:6]}.json"
+
+# Ensure TEST_DRAFTS_FILE path is resolved and the file exists, following XDG Base Directory Specification if necessary.
+TEST_DRAFTS_FILE = ensure_drafts_file(TEST_DRAFTS_FILE)
+os.remove(TEST_DRAFTS_FILE)
 
 class TestThreadsCLI(unittest.TestCase):
     def setUp(self):
@@ -26,7 +49,7 @@ class TestThreadsCLI(unittest.TestCase):
         self.assertIn("Recent Posts", result.stdout)
 
     def test_create_text_post(self):
-        with patch("main.create_post") as mock_create_post:
+        with patch("src.app.create_post") as mock_create_post:
             mock_create_post.return_value = {"id": "123"}
             result = self.runner.invoke(app, ["create-text-post", "Test post"])
             self.assertEqual(result.exit_code, 0)
@@ -56,7 +79,7 @@ class TestThreadsCLI(unittest.TestCase):
             draft_id = drafts[0]["id"]
 
         # Test sending an existing draft
-        with patch("main.create_text_post") as mock_create_text_post:
+        with patch("src.app.create_text_post") as mock_create_text_post:
             result = self.runner.invoke(app, ["send-draft", str(draft_id), "--drafts-file", TEST_DRAFTS_FILE])
             self.assertEqual(result.exit_code, 0)
             self.assertIn(f"Draft with ID {draft_id} sent and removed from drafts.", result.stdout)
